@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: mi-app-pro
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mi-servidor-web
+  namespace: mi-app-pro
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mi-sitio
+  template:
+    metadata:
+      labels:
+        app: mi-sitio
+    spec:
+      containers:
+      - name: mi-we2
+        image: jclizano/mi-web:v2
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            memory: "64Mi"   # Pide 64 Megabytes para empezar
+            cpu: "100m"      # Pide 0.1 núcleos de CPU
+          limits:
+            memory: "128Mi"  # Si intenta usar más de 128MB, K8s lo mata
+            cpu: "500m"      # Máximo medio núcleo de CPU
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mi-servicio-web
+  namespace: mi-app-pro
+spec:
+  selector:
+    app: mi-sitio
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
