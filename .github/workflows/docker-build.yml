@@ -27,12 +27,12 @@ jobs:
         run: |
           # Reemplaza 'deployment.yaml' por la ruta real de tu archivo de k8s
           # Este comando busca la imagen y le pone el nuevo hash del commit
-          sed -i "s|image: jclizano/mi-web:.*|image: jclizano/mi-web:${{ github.sha }}|g" k8s/deployment.yaml
+          sed -i "s|image: jclizano/mi-web:.*|image: jclizano/mi-web:${{ github.sha }}|g" web-basica.yaml
 
       - name: Commit y Push a GitHub
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
-          git add k8s/deployment.yaml
+          git add web-basica.yaml
           git commit -m "chore: update image to ${{ github.sha }} [skip ci]"
           git push
