@@ -1,26 +1,25 @@
-name: Build and Push Docker Image
+name: Build and Push with Makefile
 
 on:
   push:
-    branches: [ "main" ]  # Se activa cuando subes cambios a la rama main
+    branches: [ "main" ]
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-    
     steps:
-    - name: Checkout del código
-      uses: actions/checkout@v4
+      - name: Checkout del código
+        uses: actions/checkout@v4
 
-    - name: Login en Docker Hub
-      uses: docker/login-action@v3
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Login en Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Construir y subir imagen
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/mi-web:${{ github.sha }}
+      # EJECUTAR EL MAKEFILE PASANDO PARÁMETROS
+      - name: Build and Push via Makefile
+        run: |
+          make release \
+            IMAGE_NAME=${{ secrets.DOCKER_USERNAME }}/mi-web \
+            VERSION=${{ github.sha }}
