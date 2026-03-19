@@ -9,7 +9,7 @@ jobs:
     # REEMPLAZA: 'tu-usuario/tu-repo' por el nombre real de tu repositorio
     uses: jclizano01/test01/.github/workflows/reusable-build.yml@main
     with:
-      image_name: "${{ secrets.DOCKER_USERNAME }}/mi-web"
+      image_name: "jclizano/mi-web"
       version: "${{ github.sha }}"
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
