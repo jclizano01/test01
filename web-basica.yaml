@@ -1,8 +1,10 @@
+# 1. EL NAMESPACE (Tu habitación aislada)
 apiVersion: v1
 kind: Namespace
 metadata:
   name: mi-app-pro
 ---
+# 2. EL DEPLOYMENT (Tus 2 instancias de Nginx)
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -19,18 +21,19 @@ spec:
         app: mi-sitio
     spec:
       containers:
-      - name: mi-we2
+      - name: nginx
         image: jclizano/mi-web:v2
         ports:
         - containerPort: 80
         resources:
           requests:
-            memory: "64Mi"   # Pide 64 Megabytes para empezar
-            cpu: "100m"      # Pide 0.1 núcleos de CPU
+            memory: "64Mi"
+            cpu: "100m"
           limits:
-            memory: "128Mi"  # Si intenta usar más de 128MB, K8s lo mata
-            cpu: "500m"      # Máximo medio núcleo de CPU
+            memory: "128Mi"
+            cpu: "500m"
 ---
+# 3. EL SERVICE (La IP interna para el túnel)
 apiVersion: v1
 kind: Service
 metadata:
@@ -43,4 +46,5 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 80
-  type: LoadBalancer
+  # Usamos ClusterIP porque solo entraremos vía port-forward
+  type: ClusterIP 

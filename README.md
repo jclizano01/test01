@@ -59,3 +59,54 @@ docker
 sudo docker build -t jclizano/mi-web:v1 .
 
 sudo docker push jclizano/mi-web:v1
+
+ARGO CD
+
+kubectl create namespace argocd
+
+2. Instalar Argo CD (Versión Estable)
+kubectl apply -n argocd -f https://raw.githubusercontent.com
+
+# Descarga usando la URL directa de la versión estable
+curl -L https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml > install-argocd.yaml
+
+head -n 5 install-argocd.yaml
+
+
+# Asegúrate de tener el namespace creado
+kubectl create namespace argocd || true
+
+# Aplica el archivo que acabamos de descargar
+kubectl apply -n argocd -f install-argocd.yaml
+
+validar pods todos ready
+kubectl get pods -n argocd
+
+traer contraseña
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
+df90Zl23HpkUug2e
+
+ocurrio un error en los pods
+paso1 
+kubectl delete namespace argocd
+
+2. Crea el namespace de nuevo:
+kubectl create namespace argocd
+
+1. Forzar el borrado de los Pods
+kubectl delete pods --all -n argocd --force --grace-period=0
+
+Para solucionarlo en tu Ubuntu, debes usar el flag --server-side. Esto le dice a Kubernetes que procese el archivo en el servidor y no guarde ese historial gigante en los metadatos.
+
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml  --server-side
+
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
+
+terminal:
+kubectl port-forward svc/argocd-server -n argocd 8080:443 (Panel)
+kubectl port-forward svc/mi-servicio-web -n mi-app-pro 9090:80 (App)
+
+
+permisos 
+chmod +x k8s-up.sh
+
