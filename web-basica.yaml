@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: jclizano/mi-web:v2
+        image: jclizano/mi-web:1164ea324b267c724e39222e3e7d3a02ace54775
         ports:
         - containerPort: 80
         resources:
