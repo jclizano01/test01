@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: web-basica-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    # REEMPLAZA con la URL de tu repositorio de GitHub
+    repoURL: 'https://github.com/jclizano01/test01'
+    targetRevision: HEAD
+    # El punto indica que web-basica.yaml está en la raíz
+    path: .
+  destination:
+    server: 'https://kubernetes.default.svc'
+    # El namespace que definiste en tu archivo web-basica.yaml
+    namespace: mi-app-pro
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true # Crea 'mi-app-pro' si no existe
+
+    #Ejecuta dentro de argocd(namespace): kubectl apply -f application.yaml
