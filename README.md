@@ -110,3 +110,5 @@ kubectl port-forward svc/mi-servicio-web -n mi-app-pro 9090:80 (App)
 permisos 
 chmod +x k8s-up.sh
 
+
+while true; do kubectl port-forward svc/mi-servicio-web -n mi-app-pro 9090:80; sleep 1; done
